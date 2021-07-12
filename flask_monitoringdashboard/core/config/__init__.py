@@ -62,6 +62,9 @@ class Config(object):
         # store the Flask app
         self.app = None
 
+        # IP-Header config
+        self.ip_header = 'REMOTE_ADDR'
+
     def init_from(self, file=None, envvar=None, log_verbose=False):
         """
             The config_file must at least contains the following variables in section 'dashboard':

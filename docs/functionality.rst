@@ -111,6 +111,9 @@ that endpoint. The following data is recorded:
      from flask import request
      print(request.environ['REMOTE_ADDR'])
 
+     # you can also customize this header for proxy's
+     dashboard.config.ip_header = 'HTTP_X_FORWARDED_FOR' 
+
 
 Monitoring Level 2 - Outliers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -312,4 +315,3 @@ about which you can read more `in the corresponding documentation page <apschedu
 Need more information?
 ----------------------
 Check out the `contact page <contact.html>`_ to see how you can get in touch with us.
-

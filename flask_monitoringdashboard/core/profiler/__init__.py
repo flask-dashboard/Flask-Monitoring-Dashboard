@@ -2,6 +2,7 @@ import threading
 
 from flask import request
 
+from flask_monitoringdashboard import config
 from flask_monitoringdashboard.core.group_by import get_group_by
 from flask_monitoringdashboard.core.profiler.base_profiler import BaseProfiler
 from flask_monitoringdashboard.core.profiler.outlier_profiler import OutlierProfiler
@@ -24,7 +25,7 @@ def start_performance_thread(endpoint, duration, status_code):
     :param duration: duration of the request
     :param status_code: HTTP status code of the request
     """
-    ip = request.environ['REMOTE_ADDR']
+    ip = request.environ[config.ip_header]
     group_by = get_group_by()
     PerformanceProfiler(endpoint, ip, duration, group_by, status_code).start()
 
@@ -32,7 +33,7 @@ def start_performance_thread(endpoint, duration, status_code):
 def start_profiler_thread(endpoint):
     """ Starts a thread that profiles the main thread. """
     current_thread = threading.current_thread().ident
-    ip = request.environ['REMOTE_ADDR']
+    ip = request.environ[config.ip_header]
     group_by = get_group_by()
     thread = StacktraceProfiler(current_thread, endpoint, ip, group_by)
     thread.start()
@@ -42,7 +43,7 @@ def start_profiler_thread(endpoint):
 def start_outlier_thread(endpoint):
     """ Starts a thread that collects outliers."""
     current_thread = threading.current_thread().ident
-    ip = request.environ['REMOTE_ADDR']
+    ip = request.environ[config.ip_header]
     group_by = get_group_by()
     thread = OutlierProfiler(current_thread, endpoint, ip, group_by)
     thread.start()
@@ -52,7 +53,7 @@ def start_outlier_thread(endpoint):
 def start_profiler_and_outlier_thread(endpoint):
     """ Starts two threads: PerformanceProfiler and StacktraceProfiler.  """
     current_thread = threading.current_thread().ident
-    ip = request.environ['REMOTE_ADDR']
+    ip = request.environ[config.ip_header]
     group_by = get_group_by()
     outlier = OutlierProfiler(current_thread, endpoint, ip, group_by)
     thread = StacktraceProfiler(current_thread, endpoint, ip, group_by, outlier)
