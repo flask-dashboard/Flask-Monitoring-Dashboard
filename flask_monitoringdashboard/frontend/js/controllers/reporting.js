@@ -51,7 +51,7 @@ export function ReportingController($scope, $http, menuService, endpointService,
 
     $scope.selectSection = function (section) {
         if (section === 'commits') {
-            $http.get('/dashboard/api/versions').then(function (response) {
+            $http.get('api/versions').then(function (response) {
                 $scope.versions = response.data;
             })
         }
@@ -103,12 +103,12 @@ export function ReportingController($scope, $http, menuService, endpointService,
 
         let promise;
         if ($scope.activeSection === 'commits') {
-            promise = $http.post('/dashboard/api/reporting/make_report/commits', {
+            promise = $http.post('api/reporting/make_report/commits', {
                 commit_version: $scope.commitVersion,
                 baseline_commit_version: $scope.baseLineCommitVersion,
             })
         } else {
-            promise = $http.post(`/dashboard/api/reporting/make_report/intervals`, {
+            promise = $http.post(`api/reporting/make_report/intervals`, {
                 interval: {
                     to: parseInt(`${$scope.intervals.comparison.to.getTime() / 1000}`),
                     from: parseInt(`${$scope.intervals.comparison.from.getTime() / 1000}`),
