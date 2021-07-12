@@ -62,6 +62,19 @@ class Config(object):
         # store the Flask app
         self.app = None
 
+        # dependencies
+        self.get_ip = None
+
+    def inject_dependencies(self, get_ip=None):
+        """
+            Injects certain dependencies into the Monitoring Dashboard for better integration.
+            :param get_ip: a function that gets the appropriate client IP address inside a request
+                context. Overriding this allows you to provide the correct IP for logging purposes
+                in case your setup is running behind reverse proxies.
+        """
+        if get_ip:
+            self.get_ip = get_ip
+
     def init_from(self, file=None, envvar=None, log_verbose=False):
         """
             The config_file must at least contains the following variables in section 'dashboard':
